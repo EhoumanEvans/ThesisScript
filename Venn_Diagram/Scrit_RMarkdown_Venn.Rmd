@@ -10,7 +10,7 @@ output: word_document
 ```{r}
 ## Charger les packages nécessaires
 # Pour l'importation des données
-library(readr) 
+library(readr)
 ## Pour la réalisation des graphiques
 library(VennDiagram)
 ```
@@ -28,9 +28,9 @@ head(dtfchap, 3)
 # Tableau des sites témoins
 dtfchapx= subset(dtfchap , statut=="Tem")
 # Tableau des sites de faible endémicité
-dtfchapy= subset(dtfchap , statut=="Faib") 
+dtfchapy= subset(dtfchap , statut=="Faib")
 # Tableau des sites de forte endémcité
-dtfchapz= subset(dtfchap , statut=="End") 
+dtfchapz= subset(dtfchap , statut=="End")
 ```
 
 
@@ -57,9 +57,5 @@ v <- venn.diagram(list(Temoin=Temoin,  Faible=Faible, Endemique=Endemique ),
 grid.newpage()
 grid.draw(v)
 
+# Fin des changements
 ```
-
-
-
-
-
