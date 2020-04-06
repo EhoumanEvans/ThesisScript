@@ -13,7 +13,7 @@ library(vegan)
 library(ggplot2)
 ```
 
-#Importer le tableau de données
+# Importer le tableau de données
 
 ```{r}
 #Tableau de données floristiques
