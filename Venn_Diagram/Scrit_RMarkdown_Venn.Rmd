@@ -1,0 +1,65 @@
+---
+title: "Script_Diagramme_Venn"
+author: "Evans, E."
+date: "03/08/2018"
+output: word_document
+---
+
+
+
+```{r}
+## Charger les packages nécessaires
+# Pour l'importation des données
+library(readr) 
+## Pour la réalisation des graphiques
+library(VennDiagram)
+```
+
+```{r}
+# Importer les données
+## Importer le tableau principal des données
+dtfchap <- read_delim("dtfchap.csv", ";", escape_double = FALSE, trim_ws = TRUE)
+## Visualisation des trois premières lignes
+head(dtfchap, 3)
+```
+
+```{r}
+## Subset le tableau de données principal en fonction du statut du site
+# Tableau des sites témoins
+dtfchapx= subset(dtfchap , statut=="Tem")
+# Tableau des sites de faible endémicité
+dtfchapy= subset(dtfchap , statut=="Faib") 
+# Tableau des sites de forte endémcité
+dtfchapz= subset(dtfchap , statut=="End") 
+```
+
+
+
+```{r}
+# Réaliser les listes des espèces pour chaque site selon son statut
+Temoin=unique(dtfchapx$espece)
+Faible=unique(dtfchapy$espece)
+Endemique=unique(dtfchapz$espece)
+```
+
+
+```{r }
+# Réaliser le graphique
+# Construire le diagramme de Venn
+v <- venn.diagram(list(Temoin=Temoin,  Faible=Faible, Endemique=Endemique ),
+                  fill = c("orange", "blue", "yellow"),
+                  alpha = c(0.5, 0.5, 0.5), cat.cex =3.0, cex=3.0,
+                  filename=NULL)
+```
+
+```{r, chunk-label, results='hide', fig.height=4}
+# Exporter et visualiser le diagramme de Venn
+grid.newpage()
+grid.draw(v)
+
+```
+
+
+
+
+
