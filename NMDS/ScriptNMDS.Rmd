@@ -68,8 +68,7 @@ nmds <-
         legend.justification=c(1,0), legend.position=c(1,0)) +
   guides(fill = guide_legend(override.aes=list(size=2.5,linetype=0),fill = NULL, ncol=1))
 nmds
+
+
+# Fin du script
 ```
-
-
-
-
