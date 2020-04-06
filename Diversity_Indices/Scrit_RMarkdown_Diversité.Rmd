@@ -1,0 +1,63 @@
+---
+title: "Script_Calcule_Indices_Diversité"
+author: "Evans, E."
+date: "03/08/2018"
+output: word_document
+---
+
+```{r}
+## Charger les packages nécessaires
+# Pour l'importation des données
+library(readr)
+# Pour le calcule des indices de similarité
+library(vegan)
+```
+
+
+```{r}
+## Importer le tableau de données principal
+# Tableau principal
+dtfchap <- read_delim("dtfchap.csv", ";", escape_double = FALSE, trim_ws = TRUE)
+# Afficher les 3 premières lignes du tableau principal
+head(dtfchap, 3)
+
+```
+
+
+```{r}
+## Subset le tableau de données principal en fonction du statut du site
+# Tableau des sites témoins
+dtfchapx= subset(dtfchap , statut=="Tem")
+# Tableau des sites de faible endémicité
+dtfchapy= subset(dtfchap , statut=="Faib")
+# Tableau des sites de forte endémcité
+dtfchapz= subset(dtfchap , statut=="End")
+
+```
+
+
+```{r}
+## Calculer les indices de diverisité des sites témoin, de faible endémicité, forte endémicité
+# Tableau croisé des statut en lignes et espèces en colones
+tab = xtabs(braunblanquet ~ statut + espece, data=dtfchap)
+#Richesse spécifique
+rich = specnumber(tab)
+#Indice de diversité de Shannon
+shan=diversity(tab, index = "shannon")
+#Indice de Piélou
+pielo=shan/log(rich)
+#Indice de Simpson
+simp = diversity(tab, "simpson")
+
+```
+
+
+```{r}
+# Afficher et arrondir toutes les valeurs calculées
+round(shan, 2)
+round(pielo, 2)
+round(simp, 2)
+
+
+# Fin de la ligne 
+```
