@@ -1,0 +1,73 @@
+---
+title: "Script_Indval"
+author: "Evans"
+date: "4 août 2018 <br /> update 22 avril 2020"
+output: word_document
+---
+
+
+#Packages nécessaires
+
+```{r }
+#Importation des données
+library(readr)
+#Calcul des paramètres écologiques
+#library(vegan) pas nécessaire
+#Réalisation de la méthode indval
+library(labdsv)
+#Manipulation des tableaux
+library(plyr)
+```
+
+#Importer et préparation des tableaux de données
+
+```{r}
+##Réalisation du tableau croisé quadrat espèce
+#spe_only1=table(campagne$`code quadrat`, campagne$espece)
+#Exportation  du tableau puis importation
+#write.csv2(spe_only1,file="spe_only1.csv",row.names = TRUE)
+#Importation du tableau de données floristiques
+spe_only1 <- read_delim("spe_only1.csv", ";", escape_double = FALSE, trim_ws = TRUE)
+head(spe_only1)
+# modief dans excel le tableau pour le convertir en un dataframe
+spe.only1<- spe_only1[ , 2 :310]
+
+#aussi enlever les expèces qui n’apparaissent dans aucun site
+spe.only1[ , !apply(spe.only1==0,2,all)]
+
+
+#Tableau des sites
+group1 <- read_delim("group1.csv", ";", escape_double = FALSE, trim_ws = TRUE)
+head(group1)
+
+```
+
+
+# Calcul de la valeur Indval (Dufrene and Legendre)
+```{r}
+# Indicator species based sur les statut, Témoin (1), Faible (2) et Endémique (3)
+
+iva<-indval(spe.only1, group1$statut )
+# Imprimer le résulats pour voir les informations générées
+#iva 
+
+```
+
+```{r}
+# Ne prendre en compte que les espèces pour lesquelle la valeur inval est significative et qui apparaissement au moins dans 2 sites.
+gr <- iva$maxcls[iva$pval<=0.05]
+iv <- iva$indcls[iva$pval<=0.05]
+pv <- iva$pval[iva$pval<=0.05]
+fr<-apply(spe.only1>0,2, sum)[iva$pval<=0.05]
+
+# Faire un tableau pour sauvegarder tous les résultats (RsultatIndval)
+RsultatIndval=data.frame(group=gr, 
+                indval=iv, 
+                pvalue=pv, 
+                freq=fr)
+#Imprimer les résultats ordonnée selon le groupe
+RsultatIndval <- RsultatIndval[order(RsultatIndval$group, -RsultatIndval$indval),]
+RsultatIndval
+
+```
+
